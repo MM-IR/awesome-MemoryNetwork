@@ -1,6 +1,11 @@
 # awesome-MemoryNetwork
 记忆神经网络有关的工作
 
+对于记忆神经网络而言，memory slot里面的信息如果对于query是很有用的将会变得很好。
+抽取信息的时候如果有两种memory@embedding，那么一个是和query更加相关的，一个是和答案相关的结果会比单纯两个memory效果要更好。
+
+该两个亮点的idea全部来自于KVMemN2N
+
 ## 1.最初始的记忆神经网络(非end-to-end)2014FB
 ![](xend-to-endMem.png)
 
@@ -61,5 +66,35 @@ y=H(x).T(x) + x.(1-T(x))，这里的T就是gate机制主导的，SIGMOID(wx+b).
 #### 那么这里最后的结果也是超过MemN2N的。
 
 
+## 4.KVMemN2N
+Motivation:
+1.知识库Kb类问题太限制性了。对于开放问答有一点困难，因为我们没办法就是拥有一个通用的知识图谱，而且也很稀疏。
+
+### 改进点
+#### 1.Key Hashing
+这里就是key-value memories往往来源于Knowledge source,所以说memories的数量会很庞大，但是大部分记忆呢都是和当前query无关的记忆。
+所以我们要做的事情是先排除掉那些确保无关的memory set。
+
+这里就是根据query出现的word（首先去掉出现频率次数大于等于1000的stop words）来对knowledge进行筛选。筛选出包含某个word的memory。
+
+#### 2.Key Addressing
+这里就是利用Hashing的结果（candidate memories）去和query经过线性变换后的结果计算一个相关概率。softmax。
+
+#### 3.Value Reading
+然后就是两个memory啦。就是第二个还是来加权得到对应的o，然后和MemN2N一样的操作进行sum得到对应的query。
+
+#### 然后就是multi-step啦。+softmax啦。
+
+### 核心就是我们如何将KB的memory进行表示呢？（K对应的memory slots应该更加接近question，然后v对应的更加接近value）
+1.KB Triple（Key用Subject、V用作object就行-+一个double可以回答更多问题）
+subject-relation-object的形式。还可以把知识库做一个double。然后就是embedding呗～（属于K和V）
+2.Sentence Level
+就是从文本中抽取出kv对，存到memory slots里面。Sentence Level的思想就是把文章分成一句句话，然后每一句话抽取出一个kv对。其中k和v都是用整个句子的BoW来表示，这个方法其实就是MemN2N的用法。
+3.Window Level
+一篇文章可以划分为多个大小为W的window，将window的方法用于MemN2N也有不错的效果，但是本文中作者使用的是将每个window的BoW表示作为key，每个window的center word作为value，因为每个问题和window内的句子具有更强的关联性。（BoW就是sum word vector啦）（这里有点改变哦）
+4.Window + Center Encoding
+当于是对上一种方法的扩展，首先把dictionary的大小加倍，通过加倍后的字典重新对key和value进行编码，作者说这样有助于找出中心词与其周围词的相关性。
+5.Window+Title
+文章的标题通常是和文章相关问题的答案，比如“What did Harrison Ford star in?”可以通过“Blade Runner”这个标题来回答。所以作者在之前Window Level的基础上添加了新的kv对，其中key还是用整个window的BoW，value使用title来表示，使用“_window_” or “_title_”来区分两种不同的kv对。
 
 
