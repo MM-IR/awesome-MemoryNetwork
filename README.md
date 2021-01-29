@@ -86,15 +86,25 @@ Motivation:
 #### 然后就是multi-step啦。+softmax啦。
 
 ### 核心就是我们如何将KB的memory进行表示呢？（K对应的memory slots应该更加接近question，然后v对应的更加接近value）
+
 1.KB Triple（Key用Subject、V用作object就行-+一个double可以回答更多问题）
+
 subject-relation-object的形式。还可以把知识库做一个double。然后就是embedding呗～（属于K和V）
+
 2.Sentence Level
+
 就是从文本中抽取出kv对，存到memory slots里面。Sentence Level的思想就是把文章分成一句句话，然后每一句话抽取出一个kv对。其中k和v都是用整个句子的BoW来表示，这个方法其实就是MemN2N的用法。
+
 3.Window Level
+
 一篇文章可以划分为多个大小为W的window，将window的方法用于MemN2N也有不错的效果，但是本文中作者使用的是将每个window的BoW表示作为key，每个window的center word作为value，因为每个问题和window内的句子具有更强的关联性。（BoW就是sum word vector啦）（这里有点改变哦）
+
 4.Window + Center Encoding
+
 当于是对上一种方法的扩展，首先把dictionary的大小加倍，通过加倍后的字典重新对key和value进行编码，作者说这样有助于找出中心词与其周围词的相关性。
+
 5.Window+Title
+
 文章的标题通常是和文章相关问题的答案，比如“What did Harrison Ford star in?”可以通过“Blade Runner”这个标题来回答。所以作者在之前Window Level的基础上添加了新的kv对，其中key还是用整个window的BoW，value使用title来表示，使用“_window_” or “_title_”来区分两种不同的kv对。
 
 
