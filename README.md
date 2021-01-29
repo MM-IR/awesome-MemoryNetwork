@@ -53,7 +53,9 @@ y=H(x).T(x) + x.(1-T(x))，这里的T就是gate机制主导的，SIGMOID(wx+b).
 #### 残差网络就是一个special case了。
 
 #### 我们这里采取的策略就是
+
 ![](GMemN2N_eq.png)
+
 这个就是可以自主选择question的形态了吧@对于下一步的迭代。u是上一层的question，o是当前的输出（文本）。
 
 #### 那么这里最后的结果也是超过MemN2N的。
