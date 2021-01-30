@@ -113,7 +113,7 @@ subject-relation-object的形式。还可以把知识库做一个double。然后
 ## 6.Enhancing Key-Value Memory Neural Networks for Knowledge Based Question Answering(NAACL2019)（本质上这个memory是一个IR的问题）
 
 在我个人看来这方法本身的创新点只是:
-1)Query updating
+1)Query updating(其实就是多concatenate了一个vector而已，这里拼接的是addressed Key)
 2)STOP+SQ Approach@针对open-domain的答案的问题（这里就是结合了semantic parsing+IR的方法--AR训练SQ测试）
 
 Motivation:
