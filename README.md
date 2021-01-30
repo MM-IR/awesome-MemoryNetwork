@@ -130,12 +130,12 @@ KV-MemNN在开放域的KB-QA上表现并不好，这儿有两个原因。
 
 3）比起semantic parser这种需要很大的labor costs的，我们需要的是弱监督，只需要question-answer pairs～
 
-#### 1.Key Hashing
+#### 1.Key Hashing（STOP告诉我们的模型我们已经积累了足够的facts去回答问题了）-筛选
 这里所做的工作就是根据KB和question中的word进行筛选。然后就是所有的entity linking和过滤他们的关系have more than 100 objects。
 然后为了避免模型有重复的或者invalid memory reading。我们就是引入了一个special key，叫做STOP into the memory for all questions。
 STOP: special symbol represented by all-zero vector.
 STOPkey就是为了告诉我们的模型我们已经积累了足够的facts去回答问题了，而不需要后续find other facts@后面的hop啦。
 
-#
-
+#### 2.Key Addressing 和 Value Reading
+第一个首先
 
