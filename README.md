@@ -111,6 +111,11 @@ subject-relation-object的形式。还可以把知识库做一个double。然后
 
 
 ## 6.Enhancing Key-Value Memory Neural Networks for Knowledge Based Question Answering(NAACL2019)（本质上这个memory是一个IR的问题）
+
+在我个人看来这方法本身的创新点只是:
+1)Query updating
+2)STOP+SQ Approach@针对open-domain的答案的问题（这里就是结合了semantic parsing+IR的方法--AR训练SQ测试）
+
 Motivation:
 KV-MemNN在开放域的KB-QA上表现并不好，这儿有两个原因。
 
@@ -130,6 +135,8 @@ KV-MemNN在开放域的KB-QA上表现并不好，这儿有两个原因。
 
 3）比起semantic parser这种需要很大的labor costs的，我们需要的是弱监督，只需要question-answer pairs～
 
+![](KV_enhance.png)
+
 #### 1.Key Hashing（STOP告诉我们的模型我们已经积累了足够的facts去回答问题了）-筛选
 这里所做的工作就是根据KB和question中的word进行筛选。然后就是所有的entity linking和过滤他们的关系have more than 100 objects。
 然后为了避免模型有重复的或者invalid memory reading。我们就是引入了一个special key，叫做STOP into the memory for all questions。
@@ -137,5 +144,42 @@ STOP: special symbol represented by all-zero vector.
 STOPkey就是为了告诉我们的模型我们已经积累了足够的facts去回答问题了，而不需要后续find other facts@后面的hop啦。
 
 #### 2.Key Addressing 和 Value Reading
-第一个首先
+第一个首先就是匹配工作，主要做的事情就是找到对于一个给定的query最合适的key。这里的工作和往常比较接近。我们做的事情主要就是BoW 来表示vector们～
+
+#### 3.Query Updating
+##### 这里既是指出传统的MemNN就是直接sum一下initial query和对应的output，然后就是一个linear transformation。@@这种比较适合传统的RC任务，因为RC的question比较简单。
+
+可是Open domain KB-QA tasks一般是更加复杂，使用multiple relations或者constraints来。
+
+这里的question的方式就是说我们想要mask previously-addressed keys from the query could benefit latter inference.这样的话模型就有能力去专注于next hop。
+
+![](Query_update.png)
+
+#### 3.4 Answer Prediction
+传统的套路就是使用最后的value和answer之间计算相似度。
+这里会有一些问题
+```
+1.许多问题in the open domain KB-QA have multiple answers, 但是KV-MemNN只是选择其中最相似的作为最后的答案。
+2.最后一步获得的答案并不一定能够准确包含所有的答案信息。尤其是那种比较复杂的questions，比如multi-constraints或者说multi-relation。那么就是需要考虑每一个hop生成的信息才可以回答最终的答案。
+```
+那么这里就是将每个o和上一个o加起来作为最后的m。
+
+#### 这里获取答案总共包括两个手段
+1.AR:
+	就是用最后的输出m（加上以前的啦）和所有的答案进行一个匹配，然后输出概率最大的answer。
+2.SQ:
+	这个就是收集所有的best matched keys at every hop 去创建一个Structured Query，然后execute it over the KB 去获取所有的答案。然后直到key变成STOP key为止。
+
+关于SQ需要注意的事情是我们并没有一个gold-standard 的SQ，所以我们训练阶段和测试阶段采取了不同的策略。
+
+然后这里就是训练使用AR，然后测试就是使用SQ。（结果上说明我们是**第一个**使用了IR+semantic parsing fashions的）
+
+#### 重点是实验结果分析
+1.SQ比AR的效果高了6.（但是必须拥有STOP这个机制，不然效果没有传统的AR好）
+2.实验结果证明我们的query updating虽然粗糙，但是表现还是比之前的好。
+
+
+
+
+
 
