@@ -110,3 +110,32 @@ subject-relation-object的形式。还可以把知识库做一个double。然后
 文章的标题通常是和文章相关问题的答案，比如“What did Harrison Ford star in?”可以通过“Blade Runner”这个标题来回答。所以作者在之前Window Level的基础上添加了新的kv对，其中key还是用整个window的BoW，value使用title来表示，使用“_window_” or “_title_”来区分两种不同的kv对。
 
 
+## 6.Enhancing Key-Value Memory Neural Networks for Knowledge Based Question Answering(NAACL2019)（本质上这个memory是一个IR的问题）
+Motivation:
+KV-MemNN在开放域的KB-QA上表现并不好，这儿有两个原因。
+
+1.传统的KV-MemNN专注在理解facts in the memory，而不是理解question。而对于question的话尤其是那种multi-relation question，重点是将其分解为一系列的focused queries。
+  
+### 本文所说的理想的Memorynetwork需要deal with the following challenges:
+1)KV-MemNNs经常是read the memory 重复地因为他们不知道什么时候停止。
+
+2)对于multi-relation question的更新方式，传统的KV-MemNNs并不能很好的update the queries～
+
+3)对于解释性QA system的训练的话，需要比较强的注释。这里的意思就是supervision for the memory selection at each hop。
+
+### 我们的贡献
+1) a novel query udpating method: decompose complex questions and precisely address a relevant key at each hop~
+
+2）STOP策略during memory readings，这里就是避免重复的Memory Reading。
+
+3）比起semantic parser这种需要很大的labor costs的，我们需要的是弱监督，只需要question-answer pairs～
+
+#### 1.Key Hashing
+这里所做的工作就是根据KB和question中的word进行筛选。然后就是所有的entity linking和过滤他们的关系have more than 100 objects。
+然后为了避免模型有重复的或者invalid memory reading。我们就是引入了一个special key，叫做STOP into the memory for all questions。
+STOP: special symbol represented by all-zero vector.
+STOPkey就是为了告诉我们的模型我们已经积累了足够的facts去回答问题了，而不需要后续find other facts@后面的hop啦。
+
+#
+
+
