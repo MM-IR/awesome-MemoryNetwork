@@ -178,8 +178,52 @@ STOPkey就是为了告诉我们的模型我们已经积累了足够的facts去�
 1.SQ比AR的效果高了6.（但是必须拥有STOP这个机制，不然效果没有传统的AR好）
 2.实验结果证明我们的query updating虽然粗糙，但是表现还是比之前的好。
 
+## 7.Dynamic Memory Network@2015NLP，当时效果超过了非End-to-end的MemNN@bAbI dataset（一个slot的dynamic memory：GRU，是每一个fact都会参与更新memory，而不是产生一个总的好的fact的表达来更新memory）
+Motivation:(sequence tagging/classification/Seq2Seq/QA
+1.这里主要就是之前的embedding都是BoW那种，我们用GRU来搞所有的Module。
+
+![](DMN.png)
+
+首先强调一下Episodic Memory本质上就是选择输入中真正需要关注的部分@Attention，然后就会产生对应的memory vector～然后每一步迭代中都可以产生前一步迭代中没有捕获的新信息。
+
+### Input Module（一堆句子向量或者一堆word向量）
+这是将所有的文本借助GRU来表示。（如果是一个句子，那么就是句长个向量表示，然后就是Attention来选择与Question最相关的单词）
+一堆句子，就是每一个句子，然后用end-of-sentence输出就行。
+### QUestion也是固定的
+### Episodic Memory Module（此时只有一个slot）
+#### 总结: 核心就是比如说每一个句子都会和q和上一个m做一下交互，得到当前的memory。（与q相似的会保留更新当前的memory）stop对于有监督的就是加上了STOP符号，没有的就是限制iteration steps
+这里就是一个iteration的过程，这里就是由一个注意力机制+一个RNN来更新memory。输入是attention-->(输入，question以及上一个memory)
+刚开始使用question来作为hidden state的初始化。
+
+这里attention机制来计算q和输入，m和输入的相似性作为gate机制。
+
+然后更新公式就是这个相似性乘当前更新的GRU（输入，上一个memory）+剩余的前一个memory。
+
+### Answer Module@固定的输入
+这里就是将memory模块最后的输出向量和问题连接在一起来predict
+也是GRU/@这个根据任务来决定。
+
+但是这种纯DMN的attention还是需要监督。（而且那种特征向量表示方法很牵强）
+
+### 上面关于监督的说法是错误的（我自己总结的是错误的，其实事实上如果是DMN，那么就是需要所有的fact都是与问题相关的）
+
+## 8.改进Attention机制@DMN+@VQA/TextQA@2016 Mar
+### Motivation：
+
+1.DMN虽然在当时取得了SOTA，但是事实上并不一定在没有监督STOP的上面取得好的效果
+
+2.DMN不可以直接回答VQA。
+
+### 改进的方法
+
+1.一个新的input module@2-level encoder
+
+2.
 
 
+## 9.Co-memory@VideoQA 2018CVPR
+
+ 
 
 
 
