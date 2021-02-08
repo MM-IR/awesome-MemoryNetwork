@@ -368,6 +368,7 @@ MAC Network就是一个e2e的可微分的架构perform an explicit multi-step re
 ```
 
 #### 关于Read（获得是ri）这个就是图像中需要的信息r@为了表现当前的ci的任务的
+![](RU.png)
 
 1.这里就是计算knowledge-base element（多个）和memory之间的relevance。允许模型去表演transitive reasoning by 考虑上一步获取的重要信息。
 
@@ -377,7 +378,7 @@ MAC Network就是一个e2e的可微分的架构perform an explicit multi-step re
 
 #### 关于Write Unit（存在memory state里面）（这里就是输入之前检索的信息ri以及上一步的memorymi-1还有guide by 当前的ci）
 
-![](Write.png)
+![](WU.png)
 
 这里的第一步是强制的，别的都是optional的。（实验结果证明加起来效果一定更好）
 1）首先就是linear(上一步的memory，当前的retrieved information）
