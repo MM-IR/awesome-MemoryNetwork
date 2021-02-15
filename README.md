@@ -714,3 +714,66 @@ for Visual Question Answering
 1.就是将
 ## 1.Task-Oriented Conversation Generation Using Heterogeneous Memory Networ
 
+# 20.Co-memory VideoQA@CVPR 2019
+这里就是考虑到外观信息和动作信息在进行注意力计算的时候应该相互提供线索。
+
+# 20.Holistic Multi-Modal Memory Network for Movie Question Answering
+## 1.Motivation:
+1.一个核心的挑战就是必须集成不同的data sources来回答问题，但事实上early fusion和late fusion都有它们各自的弱点，比如early-fusion就是pick up meaningful semantic correlations 因为特征级别上增加的噪声～而late fusion就是does not allow cross-referring相互参照 between modalities to 定义更高级别的语义特征～
+**这里就是说前人的工作仅仅只是consider a subset of interactions between the question，videos，subtitles for context retrieval**
+
+3.而很多工作并没有利用到这个answer choices的信息～
+
+## 我们工作的核心思考HMMN
+1.我们的框架就是使用了both inter-modal and query-to-context注意力机制4 有效的数据集成@each hop～（这里就是我们的attention是整体考虑的，而不是仅仅是subset）
+
+2.就是我们在检索过程的attention也是answer-aware的，我们用到了context部分的信息。
+
+![](HMNN.jpg)
+
+![](Hmemory.jpg)
+
+## HMNN cell
+1.就是每个HMMN cell都接受问题和视频以及字幕的contexts->answer-aware summarized context.
+这里的整体就是计算一个visual-aware subtitle，然后attn而已，说实在的就是subtitle比visual更meaningful而已。
+
+# 21.A Co-Memory Network for Multimodal Sentiment Analysis
+很多目前的工作只是image和text separately来进行处理，然后最后再combine在一起搞分类。
+## 1.Motivation:
+1.前人的工作都是分开处理的，而没有考虑到两者之间的mutual influence，比如它们可以是mutually reinforce以及complement each other的。
+
+我们的想法就是提出一个创新的co-memory network去迭代建模interactions between visual contents以及textual words@@@多模态情感分析。
+
+![](ComemM.jpg)
+
+## 2.1 Feature Extraction
+1.首先关于图像，我们都知道图像对于情感分析而言还是比较有意义的，比如说我们的图像是关于love sign/rose/wedding的，那么可能就更加接近positive sentiment。然后vice versa。而且人们在看图像的时候并不是所有的部分都是有意义的，因此我们就是仅仅专注于感兴趣的部分。@@visual memory network去关注图像中重要的部分。
+
+2.这里visual memory就是low-level的conv map中的整个feature map flatten下来对于question进行attention之后，然后weighted sum。
+
+## 总之这里的思想很简单就是attention上面的关系和Co-memory VideoQA的一样～
+
+# 22. Multi-interactive Memory Network for Aspect Based Multimodal Sentiment Analysis
+aspect-level就是旨在identify the sentiment polarity of a specific aspect in the context.
+## 1.Motivation:
+1.我们是第一个去做aspect based multimodal sentiment analysis的，并且提出了一个Multi-Interactive Memory Network
+
+2.核心就是co-attention加上GRU来更新。
+
+# 23.ICON: Interactive Conversational Memory Network for Multimodal Emotion Detection
+对话中的情感识别对于build有情感的machine而言是蛮重要的。
+## 1.Motivation:
+
+# 24.Concurrence-Aware Long Short-Term Sub-Memories for Person-Person Action Recognition
+## 1.Motivation:
+1.现在LSTM在建模individual dynamics for single-person action recognition还是很有效的@时序建模。
+
+2.但是现在的RNN仅仅capture temporal dynamics of the perfon-person interactions by naively combining the activity dynamics of individuals通过建模它们as a whole。（这个就忽略了person-person interactions是如何在改变over time 的）
+
+## Novelty（Concurrent并存的）
+1.我们这里就是提出一个创新的Concurrence-Aware LSTM(Co-LSTM)去建模long-term inter-related dynamics between two interacting people on bbox covering people.
+
+2.具体上来说，对于每一个frame，两个sub-memory units就是存储了个人的motion信息。
+
+3.然后concurrent LSTM就是选择性集成并且存储了inter-related motion信息作为a new co-memory cell。
+
