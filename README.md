@@ -777,3 +777,13 @@ aspect-level就是旨在identify the sentiment polarity of a specific aspect in 
 
 3.然后concurrent LSTM就是选择性集成并且存储了inter-related motion信息作为a new co-memory cell。
 
+# 25.Multi-modal Knowledge-aware Event Memory Network for Social Media Rumor Detection
+谣言检测的工作
+The wide dissemination and misleading effects of online rumors on social media have become a critical issue concerning the public and government
+传播谣言～
+## 1.Motivation
+这里记忆神经网络工作的一个核心重点就是针对所有的samples都有效～@MN（知识共享的）
+
+
+
+
