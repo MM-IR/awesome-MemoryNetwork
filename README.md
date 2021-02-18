@@ -784,6 +784,85 @@ The wide dissemination and misleading effects of online rumors on social media h
 ## 1.Motivation
 这里记忆神经网络工作的一个核心重点就是针对所有的samples都有效～@MN（知识共享的）
 
+# 26.Multi-Hop Paragraph Retrieval for Open-Domain Question Answering(multi-hop open-domain QA)@2019 arxiv
+## 关于阅读理解以及QA最常见的几种类型
+1.MRC这里的话就是每个question都会有之伴随的文本，那么RC的主要的目标就是extract the正确的answer from the given contexts～（但是很多都是single-hop的）当然也有multihop
+2.QA，本文就是Open-domain QA，这个的话不会有任何contexts，我们就是根据问题从a large knowledge source去抽取相关的上下文，然后得到争取的答案通过一个RC component～（最近的一个比较典型的工作就是17年的TF-IDF based retriever去找到可能相关的文档，然后就是一个神经RC component去extract 最可能的答案@retrieved documents～（但是不适合multi-hop）
+## Motivation
+1.检索多个supporting paragraphs，nested amidst a large knowledge base～（这里就是不断form一个joint vector表达 of both question和paragraph～）现有的open-domain的算法不是特别适合这种multi-hop的场景～
+## Contribution
+1.提出一个新的multi-hop retrieval 方法，@imperative for truly solving open-domain multi-hop QA。@SOTA（single/multi）
+2.使用sentence-level的表达@retrieval可能会取得比段落-级别的更好的结果～
 
+![](open-domain.jpg)
+
+这里的知识也都是textual graph的形式～
+
+## 对single-hop open-domain的理解
+答案很可能就是一个paragraph之内或者single setence～
+
+## 对multi-hop的理解
+就是不仅是答案需要多个paragraph进行infer，而且有的时候我们必须先locate到第一个paragraph，然后才能找到第二个graph重要的有关的信息～
+不然有的时候第二个段落可能看起来无关～
+
+## 我们的方法的理解@MUPPET(multi-hop paragraph retrieval)
+这里就是
+a) a paragraph and question encoder;
+b) a paragraph reader;
+encoder就是将段落编码成d-维的向量们，然后encode questions into search vectors in the same向量空间～
+
+然后就是执行MIPS(maximum inner product search)去找到和given question最相似的paragraphs～
+
+然后最相似的paragraph就会传给paragraph reader去抽取最合适的答案～
+
+### 1.Paragraph and Question Encoder
+对于段落编码，我们就是生成句子级别的encoding～
+
+关于word就是charcnn+word embedding作为最后的结果～（然后BiGRU）
+
+sentence级别的信息就是maxpooling～
+
+![](Muppet.jpg)
+
+![](MuComponent.jpg)
+
+我们不断改变的还是q
+
+# 27.Generation-Augmented Retrieval for Open-domain QA@2020核心TODOTODOTODO
+## Motivation（lexical词汇的）
+1.传统的sparse retrieval方法比如TF-IDF以及BM25都是十分简单而且有效的，但仅仅是依赖lexical overlap without semantic matching～
+
+2.而当前的dense retrieval methods（就是句子表示成single vector）也是计算expensive+insufficient去exact matching 的～
+
+## 本文的核心创新点
+提出了一个query expansion method(augments a query with relevant contexts通过文本生成)@enrich semantics of the queries~
+
+2.我们发现生成的这些各种各样的contexts对于融合他们的结果而言会取得非常好的结果～
+
+3.同时sparse和dense融合在一起还可以进一步improve～（匹配上对应的extrative reader）
+
+# 28.Feature Augmented Memory with Global Attention Network for VideoQA@2020 JICAI 水文
+## Motivation
+1.RNN和self-attention很火热，但是这两种方法都有各自的缺点。比如RNN就是会忘记全局的语义@recurrent 自己的问题，以及SA这种方法无法准确建模邻居的依赖。
+
+## 我们的工作:
+1.introduce两个fine-grained的特征增强的记忆网络去加强视频和文本的memory capacity@(memorize more relevant and targeted information~)
+
+2.append the self-attn and co-attn@memory output,因此就可以capture global interaction between high-level semantic信息～
+
+## 各模块的功能
+1.feature augmented memory就是负责建模finegrained 多模态交互；
+2.self-attn就是是用来捕捉全局的上下文信息
+3.层次性的cross-modal mutual-augmented方法去融合视觉和文本模态从多个级别上。
+
+最后就是textual and visual feature在通过多个level进行fuse@achieve coarse and finegrained feature fusion～
+
+## 3.1 Feature Extraction
+对于视频特征，一个就是2D这种，我们取得的就是resnet级别的，一种就是C3D级别的frame-level feature，然后就是使用LSTM进行一个上下文信息建模。文本也是GloVe+LSTM。
+
+## 3.2 Fine-grained Feature Augmented Memory
+这里的意思就是说对于每一个step而言我们都希望我们存放的memory里面仅仅包括question-relevant video feature，同时保持能力@enhance spatial temporal inference～
+
+因此我们设计了text-augmented visual memory去改进visual memory，以及video-agumented text-memory来改进text表达～
 
 
