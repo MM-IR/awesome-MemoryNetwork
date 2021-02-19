@@ -865,4 +865,100 @@ sentence级别的信息就是maxpooling～
 
 因此我们设计了text-augmented visual memory去改进visual memory，以及video-agumented text-memory来改进text表达～
 
+# 29.GAMENet: Graph Augmented Memory Networks for Recommendation Medication Combination
+本文针对的任务就是医药推荐的任务，主要就是对于patients with complex health情况的，主动推荐一些药物combinations。
+
+## Motivation:
+1.就是现在的方法没有考虑到customize based on病人个人的健康历史；
+
+2.忽视了现有的知识对于药物与药物之间直接combine可能会有副作用。
+
+### 我们的工作
+1.我们提出Graph Augmented Memory Networks(GAMENet, 集成了drug-drug interactions knowledge graph通过一个记忆模块implemented as a GCN，然后建模longitudinal patient records as the query～
+
+## Introduction介绍
+1.longitudinal electronic health records (EHR)这里就是纵向的电子健康记录使得研究人员以及doctors可以建立更好的计算模型@推荐准确的诊断以及有效的治疗方法。
+
+**医疗推荐的两个主要措施**: 
+1）Instance-based medication推荐，这里就是仅仅考虑了current encounter当前遭遇，并没有考虑longitudinal patient history~
+
+那么这种方法的缺陷就在于newly diagnosed hypertension高血压很可能会遇到和suffered chronic uncotrolled hypertension一样的结果。（新的和老患者一样的医药推荐）
+
+2）Longitudinal medication recommendation: 这里就是建模了temporal dependencies within longitudinal patient history去预测未来的medication～
+
+**可是，上述的方法都有一个致命的缺陷**
+1.他们并没有考虑adverse drug-drug interactions(DDI) which are harder to 阻止than single drug adverse reaction～
+
+## 我们的方法的描述
+我们这里就是打算使用both longitudinal patient EHR data 和 drug knowledge base on DDIs 作为输入，然后旨在产生有效并且安全的推荐of medication combination～
+
+GAMENet主要由两个模块进行组成:
+1)patient queries based on 表达learned by dual-RNN。
+
+2）**an integrative and dynamic graph augmented memory module**:这里就是builds and fuses across多个data sources（比如drug usage information EHR以及drug知识库的DDI knowledge）（GCN in Memory Bank（MB））
+
+### 这里就是我们使用病人的个人信息作为query来产生memory readout，然后和query concatenate在一起做最后的有效的以及安全的推荐～
+3）这里就是提出使用多任务损失框架去同时学习multi-label prediction loss from EHR data and DDI loss for DDI Knowledge~
+这里就是embed multiple知识图谱late-fusion based GCN然后将最后的结果改进memory component去～
+
+@Attention-based Memory Module～～～～
+
+![](GAMENet.jpg)
+
+## Problem Formulation@multivariate observations多元观察
+1.Patient records: 每个病人可以看作是一个a sequence of multivariate observations.
+![](PatientRecord.jpg)
+
+each visit
+![](Eachvisit.jpg)
+
+就是病人的每次visit都可以看作是三种corresponding code的拼接～(corresponding diagnoses codes, procedure codes+medication code)
+(这里就是multi-hot vector，你懂的[1,1,0,0]这种就是multihot的一种表达形式～)
+
+![](Eachvisit.jpg)
+
+2.EHR&DDI Graph:
+
+## 我们主要讲讲Graph Augmented Memory Module
+这里就是将图编码的结果存入memory Bank里面了，然后就是将patient history存在Dynamic memory Key-value form去fully capture history 从不同角度出发/
+
+
+这里的就是两个memory最后都会放到final answer decoder来获取最终的结果~
+
+Dynamic Memory 就是按照动态来不断存放K-V pairs（patient history~）.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
