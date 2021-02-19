@@ -102,7 +102,7 @@ class WriteUnit(nn.Module):
         return next_mem
 
 
-class MACUnit(nn.Module):
+class MACUnit(nn.Module): # 在这里设置了max_step~
     def __init__(self, dim, max_step=12,
                 self_attention=False, memory_gate=False,
                 dropout=0.15):
@@ -197,7 +197,7 @@ class MACNetwork(nn.Module):
     def forward(self, image, question, question_len, dropout=0.15):
         b_size = question.size(0)
 
-        img = self.conv(image)
+        img = self.conv(image) # (batch_size, 512, 14, 14)
         img = img.view(b_size, self.dim, -1)
 
         embed = self.embed(question)
