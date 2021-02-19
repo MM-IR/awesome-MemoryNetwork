@@ -339,7 +339,7 @@ Motivation:(sequence tagging/classification/Seq2Seq/QA
 #### Memory
 
 ## 9.MAC cell@一个tradeoff between 深度学习的方法和symbolic方法@ICLR2018
-
+**我们的memory就是HxWxK的，而其中就是HxW就是14x14，然后weighted sum就是针对每个区域的K维vector进行weighted sum～**
 ### Motivation:仿真一个真实的推理单元
 
 1.深度学习的方法缺乏解释性，阻碍他们表现explicit and sound inference procedure。
