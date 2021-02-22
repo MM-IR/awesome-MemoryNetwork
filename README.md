@@ -928,6 +928,10 @@ each visit
 Dynamic Memory 就是按照动态来不断存放K-V pairs（patient history~）.
 
 
+# 30.Recurrent Relational Memory Network for Unsupervised Image Captioning
+GAN models@existing arts, 
+## Motivation
+1.本论文就是提出novel memory-based network rather than GAN~(Recurrent Relational Memory Network),**这里就是concept-to-sentence memory translator@2-stage memory 机制**
 
 
 
