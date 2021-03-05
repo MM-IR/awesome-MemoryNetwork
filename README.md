@@ -933,6 +933,65 @@ GAN models@existing arts,
 ## Motivation
 1.本论文就是提出novel memory-based network rather than GAN~(Recurrent Relational Memory Network),**这里就是concept-to-sentence memory translator@2-stage memory 机制**
 
+# 31.CM-Net: A Novel Collaborative Memory Network for Spoken Language understanding
+## 1.Motivation:
+
+
+## 介绍一下SLU任务
+这个任务本质上是对话系统的核心。这个旨在识别intent and semantic constituents for a given utterance。
+
+主要任务包括：
+
+1.intent detection；意图识别（ID）
+
+2.slot filling。关键槽位的提取（SF）
+
+```
+1.我要听[北京天安门, song] -- Intent：播放歌曲
+2.帮我叫个车，到[北京天安门, location] -- Inent：打车
+3.播放[忘情水, song] -- Intent：播放歌曲
+4.播放[复仇者联盟, movie] -- Intent：播放视频
+```
+
+事实上一开始人们是尝试将两个任务分开来做的，slot filling就是找到关键槽位，一般是seq2seq的做法。ID任务就是分类任务～
+
+**但是事实上是那个这两个任务是十分相关的，因此人们考虑做joint learning**
+
+## 关于Introduction
+之前这两个任务主要的操作就是使用CNN/RNN/asynchronous bi-model的joint model～
+
+**但是这些joint model并没有产生representations of slots and intents 之间的交互～**
+
+直觉上而言，slots和intents from similar fields往往是同时发生的，因此我们应该用两者来相互促进生成对应的表达～
+
+1.那么就有人使用intent表达来单方向的guide slot filling task@**门控机制**
+
+2.当然也有双向的capsule network。但是这个模型有两个缺陷，
+
+1）信息流都是从words到slots，slots到intents的，然后intents 到words in a pipeline manner。**这个在某种程度上有些限度capture complicated correlations among words**
+
+2）局部上下文信息@对于slot filling很有意义的，并没有显示建模的～
+
+## 我们提出的东西
+提出了一个创新的Collaborative Memory Network**CM-Net**。
+
+主要的想法就是直接捕捉语义关系among words/slots/intents.(collaborative manner)
+
+-通过CM-block来交替information exchange among the task-specific information **memories/local context信息/global sequential 信息**
+
+1）Deliberate Attention：获得slot-specific and intent-specific 表达 from记忆in a collaborative manner～（刻意的attn）其实就是精修的注意力机制。
+
+2）Local Calculation：更新局部上下文表达根据**上一个deliberate attention的slot和intent表达**～
+
+3）Global Recurrence：根据前面的局部计算的局部上下文表达@**global sequential 表达**～
+
+![](CMNet.jpg)
+
+## 其实就是Co-memory@VideoQA的形式～
+block）
+
+
+
 
 
 
