@@ -10,4 +10,5 @@
 
 因此我们这里就是必须质疑memorynetwork的效果。
 >这里就是并没有学习到的好的表现。
+<img width="846" alt="image" src="https://user-images.githubusercontent.com/40928887/123729416-86683580-d8c7-11eb-96a6-a6cc6c48aafc.png">
 
