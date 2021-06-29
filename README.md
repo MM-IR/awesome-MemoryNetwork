@@ -1065,7 +1065,42 @@ block）
 # correct reasoning is hard to learn
 <img width="756" alt="image" src="https://user-images.githubusercontent.com/40928887/123728678-3f2d7500-d8c6-11eb-8815-5546c5748a23.png">
 
-# 34.Abstractive Summarization of Reddit Posts with Multi-level Memory Networks
+# 34.Abstractive Summarization of Reddit Posts with Multi-level Memory Networks@2019 NAACL
+## 1.Motivation
+abstractive summarization 方法往往就是欠缺一些intensive study，他们这里的表现往往是低于extractive methods的。
+
+1.但是我们觉得这个performance往往是因为数据集的bias，因为那些数据集主要都是一些结构化的文章，formal的，比如news，所以extractive效果就是比较好。
+
+>summarization方法就是生成好的summary通过强迫在那些结构化比较强的文章中学习那种structural pattern。
+
+我们这里的改变方法就是我们把这个文章变成更加causal and conversational than news articles。
+
+**这个时候的文章就是很少包含sentences that are nearly identical to gold summary～**
+
+2.我们这里提出的multi-level memory networks这里就是各种级别的abstraction(比如说word-level/sentence-level/paragraph-level/document-level).
+
+> This design is motivated by that abstractive summarization is highly challenging and requires not only to understand the whole document, but also to find salient words, phrases and sentences.
+
+## 许多abstractive memory方法都是使用seq2seq
+但是他们有一些缺点:
+1)很多都是依赖seq2seq模型，这个就是第一 这个是fixed-length memories at every step而不管这个length of an input sentence;因此这里就是失败去使用far-distant 信息due to梯度消失。
+
+而我们的source text往往很长，因此我们这里需要使用long-term信息。
+
+2)RNN不能学习这个multi-level的表达，而我们的convolution操作就很适合。即使是现有的层次性rnn的话也有degrade。
+
+<img width="737" alt="image" src="https://user-images.githubusercontent.com/40928887/123731842-9255f680-d8cb-11eb-849e-d84a756be05b.png">
+
+# 4.模型解构
+MMN就是记忆了这个source text with‘一个正确的表达in the memory，然后每次从memory cells里抽取相关的信息来一次生成一个word。
+1.文本这里的表征就是fasttext的word embedding；
+
+2.关于我们的multi-level memory的表达:
+
+>这里跌motivation就是:
+
+1)人们不仅是remember as a single whole document，同时ties together several levels of abstraction。（比如word-level/sentence-level/paragraph-level/document-level）
+
 
 
 
