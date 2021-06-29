@@ -991,8 +991,83 @@ GAN models@existing arts,
 block）
 
 
+# 32.Why can't memory networks read effectively?
+## 1.conclusion
+>最近的工作说出memory network不能支持多步推理，我们就是发现vanilla memory networks在single-hop阅读理解都不是有效的。
 
+>我们发现OUTPUT CLASSIFICATION LAYER WITH ENTITY-SPECIFIC WEIGHTS以及aggregation of 段落信息with相对平坦的注意力分布是最重要的原因@差的结果。
 
+## 2.我们这里memory network表现不好的原因
+1.大的parameterized output layer就是unseen answers at test time。这楼就是可以减轻通过一个pointing layer。
+
+2.这里就是多个加权效果不是那么好，这里就是我们提供一个更强大的signal去帮助我们分配这个attn weight，
+
+3.我们同时对那些本身效果很好的memory network做了一个调研，表现的是这个数据集好其实更多是一个dataset design bias。表示memory networks不能有效考虑所有的evidence。
+
+# 33.How to learn multihop reasoning with memory networks@2019 ICLR
+**这个就是发现许多multihop architecture也不是真的学会reasoning，仅仅是说有了合适的监督之后才可以。**
+
+## 1. 我们这里的调研的问题
+1.这里就是memorynetwork真的effective吗？
+2.他们真的就像我们想要的那么表现吗？！@**这个就是multihop reasoning**
+>我们这里就是比较了人的pseudogold reasoning chain和memory的效果。
+
+## 2.我们的结论
+>memory network并不是真的学习如何reasoningin the right way，但是如果给了额外的监督信号去guide他们怎么学习的话。
+
+## 3.我们是怎么学习的emmory network@这里就是一个word-level的attn还有一个sentence level的attn的。
+<img width="785" alt="image" src="https://user-images.githubusercontent.com/40928887/123726510-b3661980-d8c2-11eb-8c15-a82bea31ba05.png">
+<img width="752" alt="image" src="https://user-images.githubusercontent.com/40928887/123726521-b6f9a080-d8c2-11eb-9826-88ca5b914e45.png">
+
+## 4.我们是怎么学习这个attn的呢/
+这里就是极大似然啦。
+<img width="760" alt="image" src="https://user-images.githubusercontent.com/40928887/123726551-c5e05300-d8c2-11eb-94a2-b73b70419b07.png">
+
+这里就是first several epochs的training的话这里有比较合理的supervision，然后在这个模型在development set上获得了好的performance之后，这里就是keep training only with dowonstream supervision~
+
+<img width="774" alt="image" src="https://user-images.githubusercontent.com/40928887/123726700-017b1d00-d8c3-11eb-9fb8-5c518a459a32.png">
+<img width="757" alt="image" src="https://user-images.githubusercontent.com/40928887/123727164-d218e000-d8c3-11eb-80fc-480bc0b3a740.png">
+
+>这里就是发现咱们的memory network其实如果给了gold 监督的话往往就是会倾向于那个，而且结果会 提升，
+
+<img width="747" alt="image" src="https://user-images.githubusercontent.com/40928887/123727435-389dfe00-d8c4-11eb-8c4a-7c836f83e5b7.png">
+
+# 5.我们结果的解释
+<img width="753" alt="image" src="https://user-images.githubusercontent.com/40928887/123727616-7ef35d00-d8c4-11eb-808a-573c6ace1565.png">
+
+这里就是有了gold reasoning paths的模型高了一个点。
+
+>这里outperform其他的模型的主要原因with more sophisticated test-time preprocessing的比如coreference resolution的表示memorynetwork可以补偿这个。
+
+这里同时还有一个实验发现，我们的notext version，就是如果仅仅依赖于encode query和options然后使用dot product来计算结果，
+
+>这个就是也会取得不错的效果，这也就暗示着这个任务仍然是可能被解决即使不依赖document。所以我们的memnet可能并没有依赖multihop来取得最终的结果。
+
+**我们解决这个问题with dataset USING masked version, as we discuss in the next section.**
+
+# Masked WIKIHOP
+<img width="510" alt="image" src="https://user-images.githubusercontent.com/40928887/123728038-3b4d2300-d8c5-11eb-9daf-55c3c502beb0.png">
+
+这个任务就是必须要求我们mask来解决问题，answer就是被replace with a special indexed mask token。然后这个occurences in the text are replaced as well。
+
+>NoText baseline cannot do better than random chance.
+
+这里就是发现如果有合理的reasoning path的话，这里的结果就是supervision会有很大的作用。
+
+# 再对attention behavior进行分析
+>1.adding attention supervision造成了这个模型的注意力分布更加more peaked，这个就是更加专注于correct chain;
+
+>2.如果能够给正确的地方更大的权重，那么就是会有更好的performance.
+
+# memnet并没有match这个pseudogold reasoning
+>lexical overlap这里呢就是memnet倾向于学习的方向。而不是识别出争取的sentence reasoning paths.
+
+# correct reasoning is hard to learn
+<img width="756" alt="image" src="https://user-images.githubusercontent.com/40928887/123728678-3f2d7500-d8c6-11eb-8815-5546c5748a23.png">
+
+# 34.Abstractive Summarization of Reddit Posts with Multi-level Memory Networks
+
+》
 
 
 
